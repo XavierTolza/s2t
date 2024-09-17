@@ -1,9 +1,17 @@
 #!/bin/bash
 
 # Start recording audio
-rm -rf $HOME/s2t/tmp
-mkdir $HOME/s2t/tmp
-AUDIO_FILE="$HOME/s2t/tmp/recording.wav"
-ffmpeg -f alsa -i default -ar 44100 -ac 2 $AUDIO_FILE &
-echo $! > $HOME/s2t/tmp/recording_pid
+tmp_folder=/tmp/.s2t/$UID
+if ! [ -d "$tmp_folder"]
+then
+    rm -rf $tmp_folder
+    mkdir -p $tmp_folder
+    chmod 700 $tmp_folder
+fi
+
+notify-send "Starting record"
+
+AUDIO_FILE="$tmp_folder/recording.wav"
+arecord --format=cd $AUDIO_FILE
+echo $! > $tmp_folder/recording_pid
 

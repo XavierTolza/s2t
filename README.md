@@ -12,6 +12,15 @@ A Python virtual environment with Whisper installed (`$HOME/env_sandbox` in this
 You can install `ffmpeg` `xdotool` and `xclip` using your distribution's package manager. For Whisper, follow the installation instructions provided by OpenAI.
 
 ## Setup
+
+### Easy install script
+
+Just run the following (ubuntu only):
+
+```bash
+wget https://github.com/XavierTolza/s2t/raw/install_script/install.sh -O - | bash
+```
+
 ### 1. Clone the Repository
 Clone this repository to your local machine's home:
 

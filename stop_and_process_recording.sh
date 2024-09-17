@@ -1,30 +1,23 @@
 #!/bin/bash
 
 # Stop recording
-kill $(cat $HOME/s2t/tmp/recording_pid)
+tmp_folder=/tmp/.s2t/$UID
+kill $(cat $tmp_folder/recording_pid)
+set -e
 
 # Transcribe audio
-source $HOME/env_sandbox/bin/activate
-whisper $HOME/s2t/tmp/recording.wav --model tiny --output_dir="${HOME}/s2t/tmp/" --output_format="txt"
+source $HOME/.s2t/venv/bin/activate
+whisper $tmp_folder/recording.wav --model base --output_dir="$tmp_folder" --output_format="txt" --language fr
 deactivate
 
+notify-send "Transcription Complete"
+
 # Temporary file for transcription
-TRANSCRIPTION_FILE="$HOME/s2t/tmp/recording.txt"
+TRANSCRIPTION_FILE="$tmp_folder/recording.txt"
 
-# Copy transcription to clipboard
-xclip -selection clipboard < $TRANSCRIPTION_FILE
+content=$(cat $TRANSCRIPTION_FILE)
 
-# Optional: Notify the user that transcription is complete
-notify-send "Transcription Complete" "Your speech has been transcribed and is now in the clipboard."
-
-# Ensure the clipboard has time to update
-sleep 0.1
-
-# Simulate the paste action
-xdotool key ctrl+v  # Use whichever key combination is appropriate
+xdotool type "$content"
 
 # Clean up
-rm -rf $HOME/s2t/tmp/
-
-
-
+#rm -rf $tmp_folder
