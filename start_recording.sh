@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+set -x
 
 # Start recording audio
 tmp_folder=/tmp/.s2t/$UID
@@ -12,6 +14,6 @@ fi
 notify-send "Starting record"
 
 AUDIO_FILE="$tmp_folder/recording.wav"
-arecord --format=cd $AUDIO_FILE
+arecord --format=cd $AUDIO_FILE &
 echo $! > $tmp_folder/recording_pid
 
